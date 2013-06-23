@@ -13,36 +13,97 @@
 ; and it launches a new Notepad window (or activates an existing one).  To
 ; try out these hotkeys, run AutoHotkey again, which will load this file.
 
-#a::
-    new()
-    return
+stop = 0
+
 #s::
+If stop = 0
+  {
+   stop = 1
+   return
+  }
+If stop = 1
+  {
+    stop = 0
+    return
+  }
+
+#a::
+    Loop, 2330
+    {
+        If stop = 1
+            Break
+
+        dir()
+        delete()      
+        open()
+    }
+    return
+
+#d::
+    dir() 
+    delete()     
     open()
     return
 
-open()
+dir()
 {
-    Send {Enter}
-    sleep, 100
-    Send !{F4}
-    sleep, 100
-    Click 1322, 35
-    sleep, 100
-    MouseMove 646, 360
+;開資料夾
+    Click 1332, 48
+    sleep, 1000
 }
 
-
-new()
+delete()
 {
-    Click 1346, 33
-    Click 1396, 33
-    Click 709, 1061
+;選第一個
+    Click 299, 160
+;刪除
+    Send {Del}
+    sleep, 300    
+;確認刪除
+    Send {Enter}
+    sleep, 300
+}
+
+open()
+{
+;選第一個
+    Click 299, 160
+;重新命名
+    Send {F2}
+;複製
+    Clipboard = 
+    Send ^c
+    ClipWait
+    name = %Clipboard%
+;複製完畢
+    Send {Esc}   
+;開
+    Send {Enter}
     sleep, 1000
+;播
+    Click 1355, 43
+;結束
+    Click 1402, 43
+;開snipping
+    Click 96, 1067
+    sleep, 1000
+;拉圖
     MouseClickDrag, left, -540, -428, 1299, 992    
-    sleep, 300
+    sleep, 1000
+;存檔
     Send ^s
+    sleep, 1000
+;貼上
+    Clipboard = %name%
+    Send ^v
+;存檔確認
+    Send {Enter}
     sleep, 300
-    Send 2012
+;關閉
+    Send !f
+    sleep, 300
+    Send x
+    sleep, 1000
 }
 
 
